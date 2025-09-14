@@ -1,0 +1,22 @@
+@media (hover: hover) and (pointer: fine) {
+	summary:hover,
+	summary:focus,
+	button:hover,
+	button:focus,
+	input[type='checkbox']:hover,
+	input[type='checkbox']:focus,
+	[role='button']:hover,
+	[role='button']:focus {
+		cursor: pointer;
+	}
+
+	button:disabled,
+	[role='button']:disabled {
+		cursor: not-allowed;
+	}
+
+	a:hover,
+	a:focus {
+		text-decoration: underline;
+	}
+}

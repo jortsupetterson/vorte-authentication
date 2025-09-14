@@ -1,0 +1,62 @@
+html[data-theme='light'] {
+	--text: #000000;
+	--bg: #ffffff;
+	--bg-ghost: rgba(0, 0, 0, 0.05);
+	--solid-ghost1: #f2f2f2;
+	--solid-ghost2: #e6e6e6;
+}
+html[data-theme='dark'] {
+	--text: #ffffff;
+	--bg: #000000;
+	--bg-ghost: rgba(255, 255, 255, 0.05);
+	--solid-ghost1: #0d0d0d;
+	--solid-ghost2: #191919;
+}
+html[data-contrast='normal'] {
+	filter: contrast(1);
+}
+html[data-contrast='low'] {
+	filter: contrast(0.75);
+}
+html[data-contrast='high'] {
+	filter: contrast(1.5);
+}
+html[data-contrast='high'] input {
+	border: solid var(--text) 1px;
+}
+
+html {
+	--bg-ghost: rgba(255, 255, 255, 0.05);
+	--solid-ghost1: #0d0d0d;
+	--solid-ghost2: #191919;
+	--blue-ghost: rgba(11, 79, 96, 0.18);
+	--input-bg: rgba(217, 217, 217, 0.06);
+	--button-bg: rgba(217, 217, 217, 0.1);
+	--cf-bg: rgba(25, 148, 115, 0.1);
+	--br1: 0.4vh;
+	--br2: 0.8vh;
+	--br3: 1.6vh;
+	--pad1: clamp(5px, 1.5vh, 20px);
+	--pad2: clamp(10px, 3vh, 40px);
+	--pad3: clamp(15px, 4.5vh, 60px);
+	--main-width: calc(clamp(320px, 100%, 1920px) - var(--pad2));
+	--sidebar-width: clamp(250px, var(--main-width), 400px);
+	min-width: 100vw;
+	min-height: 100vh;
+	font-weight: 400;
+	overflow-x: hidden;
+	overflow-y: auto;
+	text-rendering: optimizeLegibility;
+	font-kerning: none;
+	font-variant-ligatures: none;
+	font-feature-settings: 'liga' 0, 'kern' 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background: var(--bg);
+}
+
+@media (min-width: 415px) {
+	html {
+		--sidebar-width: clamp(250px, var(--main-width), 25vw);
+	}
+}

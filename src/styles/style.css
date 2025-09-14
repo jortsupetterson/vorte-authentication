@@ -1,0 +1,80 @@
+@import url('./modules/vars.css');
+@import url('./modules/body.css');
+@import url('./modules/fonts.css');
+@import url('./modules/figure.css');
+@import url('./modules/normalize.css');
+@import url('./modules/scrollbar.css');
+@import url('./modules/hover.css');
+@import url('./modules/init.css');
+svg.background {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -40%);
+	shape-rendering: crispEdges;
+	min-height: 100vh;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	position: relative;
+	width: clamp(200px, 375px, 95%);
+	height: 75vh;
+	gap: var(--pad2);
+	z-index: 1;
+	background: var(--blue-ghost);
+	border-radius: var(--br3);
+	padding: var(--pad3);
+}
+
+header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	height: 5vh;
+	min-width: 100%;
+}
+
+h1 {
+	font-weight: 400;
+	font-size: clamp(10px, 2.25vh, 30px);
+	max-width: 90%;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	height: 50vh;
+	gap: var(--pad1);
+	min-width: 100%;
+}
+
+footer {
+	height: 20vh;
+	min-width: 100%;
+}
+
+section {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	min-width: 100%;
+	gap: var(--pad1);
+}
+
+ul {
+	min-width: 100%;
+}
+li {
+	min-width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

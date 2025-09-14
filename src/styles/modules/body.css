@@ -1,0 +1,27 @@
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+body {
+	animation: fadeIn 0.5s ease-in-out;
+	color: var(--text);
+	font-family: 'Inter';
+	left: 50%;
+	transform: translateX(-50%);
+	width: clamp(320px, 100%, 1920px);
+	max-width: 100vw;
+	height: 100vh;
+	position: relative;
+	overflow: hidden;
+	scroll-behavior: smooth;
+	padding: var(--pad1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

@@ -1,0 +1,43 @@
+ul,
+ol {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: var(--pad1);
+}
+
+a {
+	color: var(--text);
+}
+
+button {
+	color: var(--text);
+	border: none;
+	background: transparent;
+	padding: calc(var(--pad1) / 2) calc(var(--pad2) / 2);
+	border-radius: var(--br1);
+	font-family: 'Inter';
+	min-height: 2vh;
+}
+
+button svg {
+	min-height: 2vh;
+	max-height: 2vh;
+	fill: var(--text);
+}
+
+summary {
+	list-style: none;
+}
+
+summary::-webkit-details-marker {
+	display: none;
+}
+
+summary::-moz-list-bullet {
+	display: none;
+}
+
+summary::marker {
+	content: none;
+}
