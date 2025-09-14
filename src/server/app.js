@@ -5,13 +5,31 @@ export default {
 			`
 <!DOCTYPE html>
 <html lang="fi" data-theme="dark">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Todentaminen | Vorte</title>
-		<link rel="stylesheet" href="/V£RSION/style.css" />
-		<link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin />
-		<link rel="dns-prefetch" href="//challenges.cloudflare.com" />
+<head>
+<meta charset="UTF-8" />
+<title>Tunnistautuminen | Vorte</title>
+<link rel="dns-prefetch" href="//assets.vorte.app">
+<link rel="dns-prefetch" href="//challenges.cloudflare.com" />
+<link rel="dns-prefetch" href="//static.cloudflareinsights.com" />
+    
+
+<link rel="preconnect" href="https://assets.vorte.app" crossorigin>
+<link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin />
+<link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin />
+
+<link rel="preload" href="/V£RSION/style.css" as="style" />
+<link rel="preload" href="https://assets.vorte.app/fonts/Inter/Inter-VariableFont_opsz,wght.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="https://assets.vorte.app/fonts/Poppins/Poppins-Thin.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="https://assets.vorte.app/fonts/Poppins/Poppins-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/V£RSION/images/greeting.svg" as="image" type="image/svg+xml" fetchpriority="high">
+
+<link rel="stylesheet" href="/V£RSION/style.css" />
+
+		<meta name="color-scheme" content="light dark">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 		<style id="accents">
 			html {
 				--c1: #0b4f60;
@@ -20,13 +38,14 @@ export default {
 				--c4: #196129;
 			}
 		</style>
+
 		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-		<script type="module" src="/V£RSION/index.js" async defer></script>
+		<!--<script type="module" src="/V£RSION/index.js" async defer></script>-->
 	</head>
 	<body>
 		<form aria-labelledby="auth-title">
 			<header>
-				<h1 id="auth-title">Todenna käyttöoikeutesi</h1>
+				<h1 id="auth-title">Jatka tunnistautumalla</h1>
 			</header>
 			<main>
 				<section id="email">
@@ -76,7 +95,15 @@ export default {
 			<footer>
 				<section id="greeting">
 					<figure>
-						<img src="/V£RSION/images/greeting.svg" alt="Vor, Vorten maskotti tervehtimäsä sisään kirjautujaa" width="300" height="200" />
+<img 
+  src="/V£RSION/images/greeting.svg"
+  alt="Vor, Vorten maskotti tervehtimässä sisäänkirjautujaa"
+  width="300"
+  height="200"
+  decoding="async"
+  fetchpriority="high"
+  loading="eager"
+/>
 						<figcaption>Tervetuloa Vorteen!</figcaption>
 					</figure>
 				</section>

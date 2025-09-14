@@ -2,7 +2,7 @@
 	font-family: Inter;
 	font-style: normal;
 	font-weight: 100;
-	font-display: auto;
+	font-display: swap;
 	src: url(https://assets.vorte.app/fonts/Inter/Inter-VariableFont_opsz,wght.ttf) format('truetype');
 }
 
@@ -10,20 +10,20 @@
 	font-family: Inter;
 	font-style: normal;
 	font-weight: 400;
-	font-display: auto;
+	font-display: swap;
 	src: url(https://assets.vorte.app/fonts/Inter/Inter-VariableFont_opsz,wght.ttf) format('truetype');
 }
 @font-face {
 	font-family: Poppins;
 	font-style: normal;
 	font-weight: 100;
-	font-display: auto;
+	font-display: swap;
 	src: url(https://assets.vorte.app/fonts/Poppins/Poppins-Thin.ttf) format('truetype');
 }
 @font-face {
 	font-family: Poppins;
 	font-style: normal;
 	font-weight: 400;
-	font-display: auto;
+	font-display: swap;
 	src: url(https://assets.vorte.app/fonts/Poppins/Poppins-Regular.ttf) format('truetype');
 }

@@ -55,6 +55,7 @@ details[open] div input {
 	left: 0;
 	max-height: 100%;
 	padding: var(--pad1);
+	font-size: 14px;
 	font-family: 'Inter';
 	font-weight: 300;
 }
