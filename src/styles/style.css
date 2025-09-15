@@ -5,7 +5,9 @@
 @import url('./modules/normalize.css');
 @import url('./modules/scrollbar.css');
 @import url('./modules/hover.css');
+@import url('./modules/loading.css');
 @import url('./modules/init.css');
+
 svg.background {
 	position: fixed;
 	top: 50%;

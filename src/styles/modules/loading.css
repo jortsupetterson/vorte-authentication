@@ -1,0 +1,16 @@
+#indicator svg.loading {
+	display: inline-block;
+	animation: spin 1.5s linear infinite;
+	will-change: transform;
+	min-width: clamp(10px, 3vh, 20px);
+	max-width: clamp(10px, 3vh, 20px);
+	min-height: clamp(10px, 3vh, 20px);
+	max-height: clamp(10px, 3vh, 20px);
+	opacity: 0.75;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
