@@ -40,7 +40,7 @@ export default {
 		</style>
 
 		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-		<!--<script type="module" src="/V£RSION/index.js" async defer></script>-->
+		<script type="module" src="/V£RSION/index.js" async defer></script>
 	</head>
 	<body>
 		<form aria-labelledby="auth-title">

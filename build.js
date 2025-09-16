@@ -82,6 +82,7 @@ try {
 		buildStylesheet(newVersion),
 		buildEdgeApi(),
 		buildNetworkHeaders(newVersion),
+		buildBrowserScripts(newVersion),
 	]);
 	await writeFile('./state.txt', newVersion);
 } catch (err) {
