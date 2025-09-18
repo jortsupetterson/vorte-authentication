@@ -7,11 +7,10 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "vorte-authentication",
 	"workers_dev": true,
-	"main": "./dist/api/app.js",
+	"main": "./dist/api/gateway.js",
 	"compatibility_date": "2025-09-13",
 	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 	"assets": {
-		// The path to the directory containing the `index.html` file to be served at `/`
 		"directory": "./dist/assets"
 	},
 	"build": {
@@ -22,6 +21,30 @@
 	"observability": {
 		"enabled": true
 	},
-
-	"placement": { "mode": "smart" }
+	"placement": { "mode": "smart" },
+	"minify": true,
+	"services": [
+		{
+			"service": "crypto-service-v0",
+			"binding": "CRYPTO_SERVICE",
+			"entrypoint": "VorteCryptoService",
+			"remote": true
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "AUTHN_D1",
+			"database_id": "6ab5fb72-4fd7-45df-a8e3-c83407ca9e4f",
+			"preview_database_id": "9c43b0f2-7673-45b6-847b-a0bb408cd6ff",
+			"remote": true
+		}
+	],
+	"kv_namespaces": [],
+	"secrets_store_secrets": [
+		{
+			"binding": "VORTE_SERVER_SECRET",
+			"secret_name": "vorte-server-secret",
+			"store_id": "44ad49dd09074b15a7db7007f7de65f6"
+		}
+	]
 }

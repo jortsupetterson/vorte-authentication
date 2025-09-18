@@ -14,7 +14,7 @@ async function waitForTurnstile(interval = 100, timeout = 5000) {
 	} while (!ts);
 }
 
-async function handleTurnstile() {
+async function handleUser() {
 	await waitForTurnstile();
 
 	const btns = document.querySelectorAll('button');
@@ -36,38 +36,38 @@ async function handleTurnstile() {
 `;
 
 	let widgetId;
-	let token = '';
+	let turnstileToken = '';
 
 	widgetId = turnstile.render('#turnstile-container', {
 		sitekey: '0x4AAAAAABfpGcyoBCK_N8CO',
 		size: 'flexible',
 		callback(cbToken) {
-			token = cbToken || '';
+			turnstileToken = cbToken || '';
 			indicator.innerHTML = couldVerify;
 			btns.forEach((btn) => (btn.disabled = false));
 		},
 
 		'expired-callback'() {
-			token = '';
+			turnstileToken = '';
 			indicator.innerHTML = couldNotVerify;
 			if (widgetId) turnstile.reset(widgetId);
 			btns.forEach((btn) => (btn.disabled = true));
 		},
 
 		'error-callback'() {
-			token = '';
+			turnstileToken = '';
 			indicator.innerHTML = 'Virhe tarkistuksessa';
 			btns.forEach((btn) => (btn.disabled = true));
 		},
 
 		'timeout-callback'() {
-			token = '';
+			turnstileToken = '';
 			indicator.innerHTML = 'Aikakatkaisu yritä uudelleen';
 			btns.forEach((btn) => (btn.disabled = true));
 		},
 
 		'unsupported-callback'() {
-			token = '';
+			turnstileToken = '';
 			indicator.innerHTML = 'selaimesi ei tue turentileä';
 			btns.forEach((btn) => (btn.disabled = true));
 		},
@@ -76,11 +76,29 @@ async function handleTurnstile() {
 	if (typeof turnstile !== 'undefined' && widgetId) {
 		const immediate = turnstile.getResponse(widgetId);
 		if (immediate) {
-			token = immediate;
+			turnstileToken = immediate;
 			indicator.innerHTML = couldVerify;
 			btns.forEach((btn) => (btn.disabled = false));
 		}
 	}
+
+	document.addEventListener('click', (event) => {
+		const btn = event.target.closest('button');
+		if (!btn || !turnstileToken) return;
+
+		const url = new URL('/initialization', window.location.origin);
+		url.searchParams.set('via', btn.id);
+		url.searchParams.set('token', turnstileToken);
+
+		const emailEl = document.getElementById('email_address');
+		const email = emailEl?.value.trim();
+		if (email) url.searchParams.set('email_address', encodeURIComponent(email));
+
+		window.location.assign(url.toString());
+	});
 }
 
-export { handleTurnstile };
+export { handleUser };
+
+// `https://auth.vorte.app/initialization?via=${identityProvider}&token=${turnstileToken} + ? email_adress? email_address : ""`
+// `https://auth.vorte.app/callback

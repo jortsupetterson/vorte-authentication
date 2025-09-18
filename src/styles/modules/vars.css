@@ -24,6 +24,9 @@ html[data-contrast='high'] {
 html[data-contrast='high'] input {
 	border: solid var(--text) 1px;
 }
+html[data-mascot='vor'] {
+	--c1: #0b4f60;
+}
 
 html {
 	--bg-ghost: rgba(255, 255, 255, 0.05);

@@ -51,7 +51,7 @@ async function buildEdgeApi() {
 	await build({
 		bundle: true,
 		charset: 'utf8',
-		entryPoints: ['./src/server/app.js'],
+		entryPoints: ['./src/server/gateway.js'],
 		external: ['cloudflare:workers'],
 		minify: true,
 		outdir: './dist/api',
@@ -65,7 +65,7 @@ async function buildBrowserScripts(newVersion) {
 	await build({
 		bundle: true,
 		charset: 'utf8',
-		entryPoints: ['./src/scripts/index.js'],
+		entryPoints: ['./src/scripts/main.js'],
 		external: ['/V£RSION/*', `/${newVersion}/*`],
 		minify: true,
 		outdir: `./dist/assets/${newVersion}`,
