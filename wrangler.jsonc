@@ -63,6 +63,34 @@
 			"binding": "TURNSTILE_SECRET",
 			"secret_name": "turnstile-secret",
 			"store_id": "44ad49dd09074b15a7db7007f7de65f6"
+		},
+		{
+			"binding": "GOOGLE_CLIENT_SECRET",
+			"secret_name": "google-client-secret",
+			"store_id": "44ad49dd09074b15a7db7007f7de65f6"
+		},
+		{
+			"binding": "GOOGLE_CLIENT_ID",
+			"secret_name": "google-client-id",
+			"store_id": "44ad49dd09074b15a7db7007f7de65f6"
+		},
+		{
+			"binding": "AZURE_CLIENT_SECRET",
+			"secret_name": "azure-client-secret",
+			"store_id": "44ad49dd09074b15a7db7007f7de65f6"
+		},
+		{
+			"binding": "AZURE_CLIENT_ID",
+			"secret_name": "azure-client-id",
+			"store_id": "44ad49dd09074b15a7db7007f7de65f6"
+		},
+		{
+			"binding": "AZURE_TENANT_ID",
+			"secret_name": "azure-tenant-id",
+			"store_id": "44ad49dd09074b15a7db7007f7de65f6"
 		}
-	]
+	],
+	"vars": {
+		"REDIRECT_URI": "http://localhost:8787/callback"
+	}
 }

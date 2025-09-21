@@ -2,7 +2,16 @@ export function renderOneTimeCode(lang) {
 	return `
     <form aria-labelledby="auth-title">
 			<header>
-				<h1 id="auth-title">Jatka tunnistautumalla</h1>
+				<h1 id="auth-title">
+				${
+					{
+						fi: 'Vahvista oikeutesi käyttää tätä sähköpostia',
+						sv: 'Bekräfta att du har rätt att använda denna e-postadress',
+						en: 'Confirm that you have the right to use this email address',
+					}[lang]
+				}
+
+				</h1>
 			</header>
 			<main>
 				

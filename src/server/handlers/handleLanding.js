@@ -1,7 +1,7 @@
 import { renderLanding } from '../views/landing.js';
-export async function handleLanding(req) {
-	return new Response(await req.responseTemplate.body(req.lang, req.id, renderLanding(req.lang)), {
+export async function handleLanding({ id, lang, responseTemplate }) {
+	return new Response(await responseTemplate.body(lang, id, renderLanding(lang)), {
 		status: 200,
-		headers: await req.responseTemplate.headers(req.lang, req.id),
+		headers: await responseTemplate.headers(lang, id),
 	});
 }

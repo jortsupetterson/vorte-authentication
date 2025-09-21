@@ -1,11 +1,24 @@
-import { renderOneTimeCode } from '../views/oneTimeCode.js';
-export async function handleInitialization(req) {
-	const { env, ctx, params, lang, id, responseTemplate } = req;
+export const CLIENT_IDS = {
+	google: async (env) => {
+		return await env.GOOGLE_CLIENT_ID.get();
+	},
+	microsoft: async (env) => {
+		return await env.AZURE_CLIENT_ID.get();
+	},
+	apple: async (env) => {},
+};
+const URL_BASES = {
+	google: 'https://accounts.google.com/o/oauth2/v2/auth',
+	microsoft: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+	apple: '',
+};
 
+import { renderOneTimeCode } from '../views/oneTimeCode.js';
+import { renderVerificationEmail } from '../e-mails/verificationEmail.js';
+export async function handleInitialization({ env, ctx, params, lang, id, responseTemplate }) {
 	const token = params.get('token');
 	if (!token) return new Response(null, { status: 400 });
 
-	// Resolve env calls in parallel
 	const [cfSecret, eightDigits, vorteSecret, pkce, now] = await Promise.all([
 		env.TURNSTILE_SECRET.get(),
 		env.CRYPTO_SERVICE.getEightDigits(),
@@ -41,20 +54,28 @@ export async function handleInitialization(req) {
 	// Persist PKCE challenge keyed by state (300s TTL) without blocking response
 	ctx.waitUntil(env.AUTHN_SESSIONS_KV.put(state, pkce.challenge, { expirationTtl: 300 }));
 
-	const headers = new Headers();
+	//Response options
+	const headers = await responseTemplate.headers(lang, id);
 	headers.append('Set-Cookie', `AUTHN_CHALLENGE=${AUTHN_CHALLENGE}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=300`);
 
+	//OTC
 	const email = params.get('email_address');
 	if (email) {
 		await env.COMMUNICATIONS_SERVICE.sendEmail({
 			to: email,
 			subject: 'TESTI',
-			html: `<p>Kertakäyttökoodisi: ${eightDigits}</p>`,
+			html: renderVerificationEmail(lang, eightDigits),
 		});
-		headers.set('Content-Type', 'text/plain; charset=utf-8');
 		return new Response(await responseTemplate.body(lang, id, renderOneTimeCode(lang)), { status: 200, headers });
 	}
+	//SOCIAL
+	const socialPlatform = params.get('via');
+	headers.append(
+		'Location',
+		`${URL_BASES[socialPlatform]}?client_id=${await CLIENT_IDS[socialPlatform](env)}&redirect_uri=${
+			env.REDIRECT_URI
+		}&response_type=code&scope&openid+email&code_challenge=${pkce.challenge}&code_challenge_method=S256&state${state}`
+	);
 
-	// No email branch: empty 204 with cookie set
-	return new Response(null, { status: 204, headers });
+	return new Response(null, { status: 302, headers });
 }

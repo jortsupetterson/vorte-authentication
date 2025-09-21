@@ -312,7 +312,7 @@ export const template = {
 	headers: async (lang, nonce) => {
 		return new Headers({
 			// CONTENT METADATA
-			'Content-Type': 'text/html',
+			'Content-Type': 'text/html; charset=utf-8;',
 			'Content-Language': lang,
 
 			// SECURITY
