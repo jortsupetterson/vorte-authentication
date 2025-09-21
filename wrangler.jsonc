@@ -29,6 +29,12 @@
 			"binding": "CRYPTO_SERVICE",
 			"entrypoint": "VorteCryptoService",
 			"remote": true
+		},
+		{
+			"binding": "COMMUNICATIONS_SERVICE",
+			"service": "communications-service-v0",
+			"entrypoint": "VorteCommunicationsService",
+			"remote": true
 		}
 	],
 	"d1_databases": [
@@ -39,11 +45,23 @@
 			"remote": true
 		}
 	],
-	"kv_namespaces": [],
+	"kv_namespaces": [
+		{
+			"binding": "AUTHN_SESSIONS_KV",
+			"id": "836b6cfcf484442d855413d6480d5092",
+			"preview_id": "df4fbf6456aa41c7b39b27412968f134",
+			"remote": true
+		}
+	],
 	"secrets_store_secrets": [
 		{
 			"binding": "VORTE_SERVER_SECRET",
 			"secret_name": "vorte-server-secret",
+			"store_id": "44ad49dd09074b15a7db7007f7de65f6"
+		},
+		{
+			"binding": "TURNSTILE_SECRET",
+			"secret_name": "turnstile-secret",
 			"store_id": "44ad49dd09074b15a7db7007f7de65f6"
 		}
 	]

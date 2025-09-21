@@ -5,7 +5,7 @@ const DESCRIPTION = {
 	en: 'Sign in or register to Vorte. Plan and manage your business securely and efficiently.',
 };
 
-const ROBOTS_TAG = `index, follow`;
+const ROBOTS_TAG = `noindex, follow`;
 const CACHE_CONTROL = 'public, max-age=60, must-revalidate';
 const VARY = 'Accept-Encoding, Accept-Language';
 

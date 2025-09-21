@@ -2,7 +2,7 @@ export function renderLanding(lang) {
 	return `
     		<form aria-labelledby="auth-title">
 			<header>
-				<h1 id="auth-title">Jatka tunnistautumalla</h1>
+				<h1 id="auth-title">${{ fi: 'Jatka tunnistautumalla', sv: '', en: 'Continue by identifying yourself' }[lang]}</h1>
 			</header>
 			<main>
 				<section id="email">

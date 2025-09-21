@@ -92,7 +92,7 @@ async function handleUser() {
 
 		const emailEl = document.getElementById('email_address');
 		const email = emailEl?.value.trim();
-		if (email) url.searchParams.set('email_address', encodeURIComponent(email));
+		if (email) url.searchParams.set('email_address', email);
 
 		window.location.assign(url.toString());
 	});

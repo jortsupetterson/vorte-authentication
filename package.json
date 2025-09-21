@@ -1,5 +1,10 @@
 {
 	"name": "vorte-authentication",
+	"author": {
+		"email": "lehtinenjori03@gmail.com",
+		"name": "Jori Lehtinen",
+		"url": "https://auth.vorte.app"
+	},
 	"version": "0.0.0",
 	"private": true,
 	"minify": true,
@@ -9,7 +14,7 @@
 		"dev": "wrangler dev"
 	},
 	"devDependencies": {
-		"wrangler": "^4.37.1",
-		"esbuild": "^0.25.9"
+		"wrangler": "^4.38.0",
+		"esbuild": "^0.25.10"
 	}
 }
