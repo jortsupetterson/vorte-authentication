@@ -10,7 +10,7 @@ const CACHE_CONTROL = 'public, max-age=60, must-revalidate';
 const VARY = 'Accept-Encoding, Accept-Language';
 
 export const template = {
-	body: async (lang, nonce, view) => {
+	body: async (lang, nonce, view, script) => {
 		return `
 <!DOCTYPE html>
 <html lang="${lang}" data-theme="dark" data-figure="vor">
@@ -170,7 +170,7 @@ export const template = {
 
 
 		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-		<script type="module" src="/V£RSION/main.js" async defer></script>
+		<script type="module" src="/V£RSION/scripts/${script}/events.js" async defer></script>
 
 		<script type="application/ld+json" nonce="${nonce}">
 {
@@ -335,6 +335,9 @@ export const template = {
 
 			// SEO
 			'X-Robots-Tag': ROBOTS_TAG,
+
+			//COOKIE
+			'Set-Cookie': `lang=${lang}; Same-Site=strict;`,
 
 			// CACHING
 			'Cache-Control': CACHE_CONTROL,

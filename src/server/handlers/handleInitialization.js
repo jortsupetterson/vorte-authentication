@@ -63,10 +63,10 @@ export async function handleInitialization({ env, ctx, params, lang, id, respons
 	if (email) {
 		await env.COMMUNICATIONS_SERVICE.sendEmail({
 			to: email,
-			subject: 'TESTI',
+			subject: 'Olet tunnistautumassa palveluun Vorte',
 			html: renderVerificationEmail(lang, eightDigits),
 		});
-		return new Response(await responseTemplate.body(lang, id, renderOneTimeCode(lang)), { status: 200, headers });
+		return new Response(await responseTemplate.body(lang, id, renderOneTimeCode(lang, email), 'otc'), { status: 200, headers });
 	}
 	//SOCIAL
 	const socialPlatform = params.get('via');

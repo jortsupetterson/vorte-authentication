@@ -1,4 +1,4 @@
-export function renderLanding(lang) {
+export function renderDefault(lang) {
 	return `
     		<form aria-labelledby="auth-title">
 			<header>

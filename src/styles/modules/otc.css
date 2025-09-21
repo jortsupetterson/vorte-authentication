@@ -1,0 +1,22 @@
+p {
+	position: relative;
+	max-width: 90%;
+	text-align: center;
+}
+
+div#digitInput {
+	position: relative;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 100%;
+}
+
+div#digitInput input[type='text'] {
+	position: relative;
+	background: var(--blue-ghost);
+	width: 10%;
+	height: 5vh;
+	text-align: center;
+	font-size: 4vh;
+}

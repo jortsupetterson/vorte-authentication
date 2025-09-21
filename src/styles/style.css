@@ -6,7 +6,8 @@
 @import url('./modules/scrollbar.css');
 @import url('./modules/hover.css');
 @import url('./modules/loading.css');
-@import url('./modules/init.css');
+@import url('./modules/default.css');
+@import url('./modules/otc.css');
 
 svg.background {
 	position: fixed;
@@ -24,7 +25,7 @@ form {
 	align-items: center;
 	position: relative;
 	width: clamp(200px, 375px, 95%);
-	height: 75vh;
+	height: auto;
 	gap: var(--pad2);
 	z-index: 1;
 	background: var(--blue-ghost);
@@ -52,13 +53,14 @@ main {
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
-	height: 50vh;
+	height: auto;
 	gap: var(--pad1);
 	min-width: 100%;
+	max-width: 100%;
 }
 
 footer {
-	height: 20vh;
+	height: auto;
 	min-width: 100%;
 }
 

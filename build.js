@@ -65,10 +65,10 @@ async function buildBrowserScripts(newVersion) {
 	await build({
 		bundle: true,
 		charset: 'utf8',
-		entryPoints: ['./src/scripts/main.js'],
+		entryPoints: ['./src/scripts/default/events.js', './src/scripts/otc/events.js'],
 		external: ['/V£RSION/*', `/${newVersion}/*`],
 		minify: true,
-		outdir: `./dist/assets/${newVersion}`,
+		outdir: `./dist/assets/${newVersion}/scripts`,
 		platform: 'browser',
 		plugins: [contentMinifierPlugin({ version: newVersion })],
 		treeShaking: true,

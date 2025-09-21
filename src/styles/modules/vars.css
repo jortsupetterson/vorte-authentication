@@ -24,7 +24,7 @@ html[data-contrast='high'] {
 html[data-contrast='high'] input {
 	border: solid var(--text) 1px;
 }
-html[data-mascot='vor'] {
+html[data-figure='vor'] {
 	--c1: #0b4f60;
 }
 

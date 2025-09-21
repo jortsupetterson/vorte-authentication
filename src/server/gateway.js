@@ -1,12 +1,12 @@
 import { template } from './utilities/template.js';
-import { handleLanding } from './handlers/handleLanding.js';
+import { handleDefault } from './handlers/handleDefault.js';
 import { handleInitialization } from './handlers/handleInitialization.js';
 import { handleCallback } from './handlers/handleCallback.js';
 
 const SUPPORTED_LANGUAGES = new Set(['fi', 'sv', 'en']);
 
 const HANDLER_MAP = {
-	landing: handleLanding,
+	default: handleDefault,
 	initialization: handleInitialization,
 	callback: handleCallback,
 };
@@ -35,8 +35,8 @@ export default {
 			]);
 			const [lang, nonce, handler] = await Promise.all([
 				(async (header = request.headers.get('accept-language')) => {
-					if (cookies['lang']) return cookies['lang'];
 					if (SUPPORTED_LANGUAGES.has(url[0])) return url[0];
+					if (cookies['lang']) return cookies['lang'];
 					if (!header) return 'en';
 					for (const part of header.split(',')) {
 						const tag = part.trim().split(';', 1)[0].split('-', 1)[0];
@@ -45,7 +45,7 @@ export default {
 					return 'en';
 				})(),
 				env.CRYPTO_SERVICE.getNonce(),
-				HANDLER_MAP[url[0]] ? HANDLER_MAP[url[0]] : HANDLER_MAP['landing'],
+				HANDLER_MAP[url[0]] ? HANDLER_MAP[url[0]] : HANDLER_MAP['default'],
 			]);
 
 			return await handler({

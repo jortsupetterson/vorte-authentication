@@ -14,7 +14,7 @@ async function waitForTurnstile(interval = 100, timeout = 5000) {
 	} while (!ts);
 }
 
-async function handleUser() {
+async function handleUse() {
 	await waitForTurnstile();
 
 	const btns = document.querySelectorAll('button');
@@ -98,7 +98,4 @@ async function handleUser() {
 	});
 }
 
-export { handleUser };
-
-// `https://auth.vorte.app/initialization?via=${identityProvider}&token=${turnstileToken} + ? email_adress? email_address : ""`
-// `https://auth.vorte.app/callback
+export { handleUse };

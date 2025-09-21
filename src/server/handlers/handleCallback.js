@@ -1,1 +1,1 @@
-export async function handleCallback(cookies, lang) {}
+export async function handleCallback({ id, lang, responseTemplate }) {}
