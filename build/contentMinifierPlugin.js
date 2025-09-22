@@ -1,11 +1,13 @@
 // ESM
 import fs from 'node:fs/promises';
 
-/* ------------ helpers ------------ */
+/* ---------- helpers ---------- */
 const WS_BETWEEN_TAGS = />\s+</g;
 const WS_ANY = /\s+/g;
-const ANY_BACKTICK = /`([\s\S]*?)`/g;
+const ANY_BACKTICK = /`([\s\S]*?)`/g; // kaikki template-literalit
+const STR_LITS = /'(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`/g;
 
+const squash = (s) => s.replace(/\s+/g, ' ').trim(); // brutto-yhden rivin squasher
 function minifyHTML(s) {
 	return s.replace(WS_BETWEEN_TAGS, '><').replace(WS_ANY, ' ').trim();
 }
@@ -13,7 +15,7 @@ function looksHTML(s) {
 	return /<\w[\s\S]*?>/m.test(s);
 }
 
-/* ------------ SQLite (D1) ------------ */
+/* ---------- SQLite (D1) ---------- */
 function minifySQLite(sql) {
 	let out = '',
 		i = 0,
@@ -27,11 +29,9 @@ function minifySQLite(sql) {
 			needSpace = false;
 		}
 	};
-
 	while (i < n) {
 		const c = sql[i],
 			c2 = sql[i + 1];
-
 		if (mode === 'linecomment') {
 			if (c === '\n' || c === '\r') mode = 'code';
 			i++;
@@ -47,25 +47,22 @@ function minifySQLite(sql) {
 		if (mode === 'squote') {
 			out += c;
 			i++;
-			if (c === "'" && sql[i] === "'") {
-				out += sql[i++];
-			} else if (c === "'") mode = 'code';
+			if (c === "'" && sql[i] === "'") out += sql[i++];
+			else if (c === "'") mode = 'code';
 			continue;
 		}
 		if (mode === 'dquote') {
 			out += c;
 			i++;
-			if (c === '"' && sql[i] === '"') {
-				out += sql[i++];
-			} else if (c === '"') mode = 'code';
+			if (c === '"' && sql[i] === '"') out += sql[i++];
+			else if (c === '"') mode = 'code';
 			continue;
 		}
 		if (mode === 'bquote') {
 			out += c;
 			i++;
-			if (c === '`' && sql[i] === '`') {
-				out += sql[i++];
-			} else if (c === '`') mode = 'code';
+			if (c === '`' && sql[i] === '`') out += sql[i++];
+			else if (c === '`') mode = 'code';
 			continue;
 		}
 		if (mode === 'bracket') {
@@ -74,7 +71,6 @@ function minifySQLite(sql) {
 			if (c === ']') mode = 'code';
 			continue;
 		}
-
 		if (c === '-' && c2 === '-') {
 			i += 2;
 			mode = 'linecomment';
@@ -85,7 +81,6 @@ function minifySQLite(sql) {
 			mode = 'blockcomment';
 			continue;
 		}
-
 		if (c === "'" || c === '"' || c === '`' || c === '[') {
 			pushSpace();
 			out += c;
@@ -93,7 +88,6 @@ function minifySQLite(sql) {
 			mode = c === "'" ? 'squote' : c === '"' ? 'dquote' : c === '`' ? 'bquote' : 'bracket';
 			continue;
 		}
-
 		if (c <= ' ') {
 			const prev = out[out.length - 1] || '';
 			let j = i + 1;
@@ -103,7 +97,6 @@ function minifySQLite(sql) {
 			i = j;
 			continue;
 		}
-
 		pushSpace();
 		out += c;
 		i++;
@@ -116,15 +109,20 @@ function looksSQL(s) {
 	return /\b(SELECT|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|WITH|BEGIN|COMMIT|PRAGMA)\b/i.test(s);
 }
 
-/* ------------ main plugin ------------ */
+/* ---------- main plugin ---------- */
 export default function contentMinifierPlugin({ sqlTag = 'sql', version = '', versionToken = 'V£RSION' } = {}) {
+	const codeFilter = /\.(?:[cm]?[jt]s|tsx|jsx)$/;
+	const htmlFilter = /\.html$/;
+
+	// sql` ... `
 	const tagTpl = new RegExp(String.raw`${sqlTag}\s*` + '`([\\s\\S]*?)`', 'g');
+
+	// V£RSION | V\xA3RSION | V\u00A3RSION | custom
 	const tokenRe = version
-		? new RegExp('(' + versionToken.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '|V\\\\xA3RSION|V\\\\u00A3RSION' + ')', 'g')
+		? new RegExp('(' + versionToken.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&') + '|V\\\\xA3RSION|V\\\\u00A3RSION)', 'g')
 		: null;
 
-	const STR_LITS = /'(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`/g;
-
+	// Versiotokenit kaikissa string-litseissä rikkomatta ${...}
 	const replaceInJsStrings = (source) => {
 		if (!tokenRe) return source;
 		return source.replace(STR_LITS, (lit) => {
@@ -133,9 +131,7 @@ export default function contentMinifierPlugin({ sqlTag = 'sql', version = '', ve
 			if (q === '`') {
 				if (body.includes('${')) {
 					const parts = body.split(/(\$\{[\s\S]*?\})/g);
-					for (let i = 0; i < parts.length; i += 2) {
-						parts[i] = parts[i].replace(tokenRe, version);
-					}
+					for (let i = 0; i < parts.length; i += 2) parts[i] = parts[i].replace(tokenRe, version);
 					return '`' + parts.join('') + '`';
 				}
 				return '`' + body.replace(tokenRe, version) + '`';
@@ -144,43 +140,48 @@ export default function contentMinifierPlugin({ sqlTag = 'sql', version = '', ve
 		});
 	};
 
+	// Minifioi yhden template-litteraalin BODY:n literal-osiot:
+	// 1) jos näyttää HTML:ltä → minifyHTML
+	// 2) muuten jos SQL:ltä → minifySQLite
+	// 3) muuten → squash (yhden rivin fallback)
+	const minifyTemplateBody = (body) => {
+		if (body.includes('${')) {
+			const parts = body.split(/(\$\{[\s\S]*?\})/g);
+			for (let i = 0; i < parts.length; i += 2) {
+				const seg = parts[i];
+				parts[i] = looksHTML(seg) ? minifyHTML(seg) : looksSQL(seg) ? minifySQLite(seg) : squash(seg);
+			}
+			return parts.join('');
+		}
+		// ei interpolaatioita
+		return looksHTML(body) ? minifyHTML(body) : looksSQL(body) ? minifySQLite(body) : squash(body);
+	};
+
 	return {
 		name: 'content-minifier',
 		setup(build) {
-			// .html → minify + optional version token replace
-			build.onLoad({ filter: /\.html$/ }, async (args) => {
-				let src = await fs.readFile(args.path, 'utf8');
-				let out = minifyHTML(src);
-				if (tokenRe) out = out.replace(tokenRe, version);
-				return { contents: out, loader: 'text' };
+			// HTML → yksi rivi + versiotokenit
+			build.onLoad({ filter: htmlFilter }, async (args) => {
+				let html = await fs.readFile(args.path, 'utf8');
+				let min = minifyHTML(html);
+				if (tokenRe) min = min.replace(tokenRe, version);
+				return { contents: min, loader: 'text' };
 			});
 
-			// .js/.ts/.mjs/.cjs/.mts/.cts → minify tagged SQL, minify HTML/SQL-like template literals, token replace in all string literals
-			build.onLoad({ filter: /\.[cm]?[jt]s$/ }, async (args) => {
+			// JS/TS/JSX/TSX
+			build.onLoad({ filter: codeFilter }, async (args) => {
 				let src = await fs.readFile(args.path, 'utf8');
 
-				// 1) Tagatut SQL-templaatit: sql`...`
+				// 1) sql`...`
 				src = src.replace(tagTpl, (_m, body) => `${sqlTag}\`${minifySQLite(body)}\``);
 
-				// 2) Kaikki backtick-templaatit: päättele HTML vs. SQL ja minifioi
-				src = src.replace(ANY_BACKTICK, (m, body) => {
-					// Älä riko interpolaatioita: käsitellään vain literal-osia
-					if (body.includes('${')) {
-						const parts = body.split(/(\$\{[\s\S]*?\})/g);
-						for (let i = 0; i < parts.length; i += 2) {
-							const seg = parts[i];
-							parts[i] = looksHTML(seg) ? minifyHTML(seg) : looksSQL(seg) ? minifySQLite(seg) : seg;
-						}
-						return '`' + parts.join('') + '`';
-					}
-					const min = looksHTML(body) ? minifyHTML(body) : looksSQL(body) ? minifySQLite(body) : body;
-					return '`' + min + '`';
-				});
+				// 2) Kaikki backtick-templaatit → MINIFIOI AINA literal-osiot yhteen riviin
+				src = src.replace(ANY_BACKTICK, (_m, body) => '`' + minifyTemplateBody(body) + '`');
 
-				// 3) Versiotokenit kaikissa string-litereissä (', ", ``)
+				// 3) Versiotokenit kaikkiin merkkijonoihin
 				src = replaceInJsStrings(src);
 
-				return { contents: src, loader: 'default' };
+				return { contents: src }; // esbuild valitsee loaderin päätteestä
 			});
 		},
 	};
