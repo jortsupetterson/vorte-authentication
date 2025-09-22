@@ -1,21 +1,6 @@
-export const CLIENT_IDS = {
-	google: async (env) => {
-		return await env.GOOGLE_CLIENT_ID.get();
-	},
-	microsoft: async (env) => {
-		return await env.AZURE_CLIENT_ID.get();
-	},
-	apple: async (env) => {},
-};
-const URL_BASES = {
-	google: 'https://accounts.google.com/o/oauth2/v2/auth',
-	microsoft: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-	apple: '',
-};
-
 import { renderOneTimeCode } from '../views/oneTimeCode.js';
 import { renderVerificationEmail } from '../e-mails/verificationEmail.js';
-export async function handleInitialization({ env, ctx, params, lang, id, responseTemplate }) {
+export async function handleInitialization({ env, ctx, params, lang, id, idpClients, responseTemplate }) {
 	const token = params.get('token');
 	if (!token) return new Response(null, { status: 400 });
 
@@ -48,7 +33,8 @@ export async function handleInitialization({ env, ctx, params, lang, id, respons
 	}
 
 	// Derive state and encrypted challenge
-	const state = await env.CRYPTO_SERVICE.getCryptographicState(eightDigits, vorteSecret);
+	const state = await env.CRYPTO_SERVICE.getHashBasedMessageAuthenticationCode(eightDigits, vorteSecret, 16, 'v0-authn-initialization');
+	// `${state};${PKCE.verifier};${timeStamp};${vorte_server_secret}`
 	const AUTHN_CHALLENGE = await env.CRYPTO_SERVICE.encryptPayload(`${state};${pkce.verifier};${now};${vorteSecret}`);
 
 	// Persist PKCE challenge keyed by state (300s TTL) without blocking response
@@ -72,7 +58,7 @@ export async function handleInitialization({ env, ctx, params, lang, id, respons
 	const socialPlatform = params.get('via');
 	headers.append(
 		'Location',
-		`${URL_BASES[socialPlatform]}?client_id=${await CLIENT_IDS[socialPlatform](env)}&redirect_uri=${
+		`${idpClients.baseUrls[socialPlatform]}?client_id=${await idpClients.ids[socialPlatform](env)}&redirect_uri=${
 			env.REDIRECT_URI
 		}&response_type=code&scope&openid+email&code_challenge=${pkce.challenge}&code_challenge_method=S256&state${state}`
 	);

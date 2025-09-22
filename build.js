@@ -2,6 +2,7 @@ import { build } from 'esbuild';
 import { readFile, writeFile, mkdir, rm } from 'fs/promises';
 import contentMinifierPlugin from './build/contentMinifierPlugin.js';
 import buildNetworkHeaders from './build/buildNetworkHeaders.js';
+import buildSitemap from './build/buildSitemap.js';
 const oldVersion = await readFile('./state.txt');
 const newVersion = crypto.randomUUID();
 
@@ -83,6 +84,7 @@ try {
 		buildEdgeApi(),
 		buildNetworkHeaders(newVersion),
 		buildBrowserScripts(newVersion),
+		buildSitemap(),
 	]);
 	await writeFile('./state.txt', newVersion);
 } catch (err) {

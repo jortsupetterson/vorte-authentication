@@ -4,6 +4,12 @@ const DESCRIPTION = {
 	sv: 'Logga in eller registrera dig i Vorte. Planera och hantera din verksamhet tryggt och effektivt.',
 	en: 'Sign in or register to Vorte. Plan and manage your business securely and efficiently.',
 };
+const SSIALT = {
+	fi: 'Vorte - Tee yrityshaaveista totta',
+	sv: 'Vorte - Förverkliga dina företagsdrömmar',
+	en: 'Vorte - Turn your business dream into reality',
+};
+const SSIURL = 'https://assets.vorte.app/images/vorte_social_sharing_image.png';
 
 const ROBOTS_TAG = `noindex, follow`;
 const CACHE_CONTROL = 'public, max-age=60, must-revalidate';
@@ -18,7 +24,7 @@ export const template = {
 		<meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<title>${TITLE[lang]} | Vorte</title>
+		<title>${TITLE[lang]}\u0020|\u0020Vorte</title>
 		<meta
 			name="description"
 			content="${DESCRIPTION[lang]}"
@@ -33,17 +39,12 @@ export const template = {
         <meta property="og:description" content="${DESCRIPTION[lang]}" />
 
         <meta property="og:url" content="https://auth.vorte.app/${lang}" />
-        <meta property="og:image" content="https://assets.vorte.app/images/vorte_social_sharing_image.png" />
+        <meta property="og:image" content="${SSIURL}" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
     
-        <meta property="og:image:alt" content="${
-					{
-						fi: 'Ole oman elämäsi pomo - Vorte auttaa',
-						sv: 'Var din egen chef - Vorte hjälper dig',
-						en: 'Be your own boss with Vorte',
-					}[lang]
-				}" />
+<meta property="og:image:alt" content="${SSIALT[lang]}" />
+
         
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="${TITLE[lang]}" />
@@ -51,15 +52,9 @@ export const template = {
         <meta name="twitter:description" content="${DESCRIPTION[lang]}" />
 
         <meta name="twitter:url" content="https://auth.vorte.app/${lang}" />
-        <meta name="twitter:image" content="https://assets.vorte.app/images/vorte_social_sharing_image.png" />
+        <meta name="twitter:image" content="${SSIURL}" />
 
-        <meta name="twitter:image:alt" content="${
-					{
-						fi: 'Ole oman elämäsi pomo - Vorte auttaa',
-						sv: 'Var din egen chef - Vorte hjälper dig',
-						en: 'Be your own boss with Vorte',
-					}[lang]
-				}" />
+        <meta name="twitter:image:alt" content="${SSIALT[lang]}" />
 
     <meta name="twitter:site" content="@vorteapp" />
     <meta name="twitter:creator" content="@vorteapp" />

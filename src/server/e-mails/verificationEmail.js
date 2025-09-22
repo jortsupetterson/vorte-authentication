@@ -1,3 +1,3 @@
 export function renderVerificationEmail(lang, eightDigits) {
-	return `<p>Kertakäyttökoodisi: ${eightDigits}</p>`;
+	return `<p>Kertakäyttökoodisi:\u0020${eightDigits}</p>`;
 }

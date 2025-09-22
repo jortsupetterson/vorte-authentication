@@ -6,7 +6,7 @@ export function renderDefault(lang) {
 			</header>
 			<main>
 				<section id="email">
-					<details>
+					<details open>
 						<summary class="option">
 							<label for="email_address">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
@@ -19,7 +19,7 @@ export function renderDefault(lang) {
 							</label>
 						</summary>
 						<div>
-							<input type="email" id="email_address" name="email" autocomplete="email" required placeholder="botti.example.com" />
+							<input type="email" id="email_address" name="email" autocomplete="email" required placeholder="botti.example@mail.com" />
 							<button id="otc" type="button" disabled>
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
 									<!--!Font Awesome Free v7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->

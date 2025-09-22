@@ -1,8 +1,3 @@
-import { template } from './utilities/template.js';
-import { handleDefault } from './handlers/handleDefault.js';
-import { handleInitialization } from './handlers/handleInitialization.js';
-import { handleCallback } from './handlers/handleCallback.js';
-
 const SUPPORTED_LANGUAGES = new Set(['fi', 'sv', 'en']);
 
 const HANDLER_MAP = {
@@ -10,6 +5,45 @@ const HANDLER_MAP = {
 	initialization: handleInitialization,
 	callback: handleCallback,
 };
+
+const URL_BASES = {
+	google: 'https://accounts.google.com/o/oauth2/v2/auth',
+	microsoft: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+	apple: '',
+};
+
+const CLIENT_IDS = {
+	google: async (env) => {
+		return await env.GOOGLE_CLIENT_ID.get();
+	},
+	microsoft: async (env) => {
+		return await env.AZURE_CLIENT_ID.get();
+	},
+	apple: async (env) => {},
+};
+
+const CLIENT_SECRETS = {
+	google: async (env) => await env.GOOGLE_CLIENT_SECRET.get(),
+	microsoft: async (env) => await env.AZURE_CLIENT_SECRET.get(),
+	apple: async (env) => {},
+};
+
+const PROVIDER_POLICY = {
+	google: (claims) => ({
+		ok: claims.email_verified === true && typeof claims.email === 'string' /* && claims.hd === 'vorte.app' */,
+		email: claims.email || null,
+	}),
+	microsoft: (claims, tid) => ({
+		ok: claims.tid === tid && typeof claims.email === 'string',
+		email: claims.email || null,
+	}),
+	apple: (claims) => {},
+};
+
+import { template } from './utilities/template.js';
+import { handleDefault } from './handlers/handleDefault.js';
+import { handleInitialization } from './handlers/handleInitialization.js';
+import { handleCallback } from './handlers/handleCallback.js';
 
 export default {
 	async fetch(request, env, ctx) {
@@ -56,6 +90,12 @@ export default {
 				lang: lang,
 				params: searchParams,
 				cookies: cookies,
+				idpClients: {
+					ids: CLIENT_IDS,
+					secrets: CLIENT_SECRETS,
+					policies: PROVIDER_POLICY,
+					baseUrls: URL_BASES,
+				},
 				responseTemplate: template,
 			});
 		} catch (err) {
