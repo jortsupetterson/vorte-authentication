@@ -1,6 +1,6 @@
 const allowedDuration = 300_000;
 import { verifyJwkIdToken } from '../utilities/verifyJwkIdToken.js';
-export async function handleCallback({ env, ctx, params, lang, id, idpClients, responseTemplate }) {
+export async function handleCallback({ env, ctx, params, cookies, lang, id, idpClients, responseTemplate }) {
 	// `${state};${PKCE.verifier};${timeStamp};${vorte_server_secret}`
 	const [decryptedCookie, vorteSecret] = await Promise.all([
 		env.CRYPTO_SERVICE.decryptPayload(cookies.AUTHN_CHALLENGE),

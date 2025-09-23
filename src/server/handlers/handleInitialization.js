@@ -49,7 +49,11 @@ export async function handleInitialization({ env, ctx, params, lang, id, idpClie
 	if (email) {
 		await env.COMMUNICATIONS_SERVICE.sendEmail({
 			to: email,
-			subject: 'Olet tunnistautumassa palveluun Vorte',
+			subject: {
+				fi: 'Olet tunnistautumassa Vorte-palveluun',
+				sv: 'Du håller på att logga in i Vorte-tjänsten',
+				en: 'You are signing in to the Vorte service',
+			}[lang],
 			html: renderVerificationEmail(lang, eightDigits),
 		});
 		return new Response(await responseTemplate.body(lang, id, renderOneTimeCode(lang, email), 'otc'), { status: 200, headers });
